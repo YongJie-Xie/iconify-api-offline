@@ -1,0 +1,9 @@
+services:
+    iconify-api-offline:
+        image: iconify/api
+        container_name: iconify-api-offline
+        volumes:
+            - "./cache:/data/iconify-api/cache"
+        ports:
+            - "3000:3000"
+        restart: unless-stopped

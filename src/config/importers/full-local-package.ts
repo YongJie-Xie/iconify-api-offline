@@ -1,5 +1,7 @@
+import { existsSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname } from 'node:path';
+import { appConfig } from '../app.js';
 import { Importer } from '../../types/importers.js';
 import { createIconSetsPackageImporter } from '../../importers/full/json.js';
 import { ImportedData } from '../../types/importers/common.js';
@@ -24,6 +26,12 @@ export function createPackageIconSetImporter(
 	} catch (err) {
 		//
 	}
+	try {
+		const filename = appConfig.cacheRootDir + '/npm/' + packageName + '/package/package.json';
+		dir = existsSync(filename) ? dirname(filename) : undefined;
+	} catch (err) {
+		//
+	}
 	if (dir) {
 		return createIconSetsPackageImporter(new DirectoryDownloader<ImportedData>(dir), {});
 	}
@@ -38,3 +46,5 @@ export function createPackageIconSetImporter(
 	};
 	return createIconSetsPackageImporter(new RemoteDownloader<ImportedData>(npm, autoUpdateRemotePackage));
 }
+
+export const FullLocalPackageImporter = createPackageIconSetImporter('@iconify/json', true, false)

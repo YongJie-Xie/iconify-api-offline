@@ -1,5 +1,33 @@
 # Iconify API
 
+## Offline usage
+
+1. To build a Docker image, run `./docker.sh`.
+
+2. To cache icon data, run `docker compose up -d`.
+
+	- Waiting for icon data to be downloaded.
+
+	- Test Command: `curl http://127.0.0.1:3000/mdi.json?icons=home`.
+
+3. To save the image, run `docker save -o ./iconify-api-offline.tar iconify/api:latest`.
+
+	- Stop the container and delete: `docker compose down`.
+
+4. To pack icon data, run `tar zcvf cache.tgz ./cache`
+
+5. Copy data to the machine to be deployed.
+
+	- Files: `./docker-compose.yaml`, `./iconify-api-offline.tar`, `./cache.tgz`
+
+6. To load the image, run `docker load < ./iconify-api-offline.tar`.
+
+7. To unpack icon data, run `tar zxvf ./cache.tgz`.
+
+8. To run a Docker image, run `docker compose up -d`.
+
+---
+
 This repository contains Iconify API script. It is a HTTP server, written in Node.js that:
 
 -   Provides icon data, used by icon components that load icon data on demand (instead of bundling thousands of icons).
